@@ -1,9 +1,8 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/konojunya/go-simple-crud/controller"
 )
 
 func main() {
@@ -15,13 +14,13 @@ func main() {
 	r.Static("/css", "./public/css")
 	r.LoadHTMLGlob("view/*")
 
-	// view routing
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index", nil)
-	})
-
 	// api routing
 	api := r.Group("/api")
+	api.GET("/users", controller.FindUser)
+	api.GET("/users/:name", controller.FindUserByName)
+	api.POST("/users", controller.CreateUser)
+	api.PUT("/users/:name", controller.EditUser)
+	api.DELETE("/users/:name", controller.DeleteUser)
 
 	r.Run(":2000")
 }
